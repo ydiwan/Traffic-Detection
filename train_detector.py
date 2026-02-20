@@ -1,6 +1,7 @@
 import os
 import torch
 import yaml
+from dotenv import load_dotenv
 from roboflow import Roboflow
 from ultralytics import YOLO
 
@@ -13,19 +14,19 @@ def check_gpu():
         device_count = torch.cuda.device_count()
         print(f"Number of GPUs found: {device_count}")
         print(f"Active GPU: {torch.cuda.get_device_name(0)}")
-        print("-----------------------")
         return "cuda"
     else:
         print("WARNING: CUDA not found! PyTorch will use the CPU.")
-        print("-----------------------")
         return "cpu"
     
 def main():
     
     device = check_gpu()
     
+    api_key = os.getenv("ROBOFLOW_API_KEY")
+    
     if device == "cpu":
-        print("Exiting to prevent CPU training. Please fix your PyTorch CUDA installation.")
+        print("Exiting to prevent CPU training. Please fix PyTorch CUDA installation.")
         return
     
     # check gpu availability (make sure its not using the cpu)
@@ -40,7 +41,7 @@ def main():
 
     # roboflow dataset download
     print("Downloading dataset...")
-    rf = Roboflow(api_key="1cvfgr6GI71LB8z4XPor")
+    rf = Roboflow(api_key=api_key)
     project = rf.workspace("wawan-pradana").project("cinta_v2")
     dataset = project.version(1).download("yolov5")
 
@@ -84,19 +85,19 @@ def main():
     metrics = model.val()
 
     print("Running inference on a test video...")
-    test_video = "video1.mp4" 
+    test_dir = "test_videos"
     
-    if os.path.exists(test_video):
+    if os.path.exists(test_dir) and os.path.isdir(test_dir):
         prediction_results = model.predict(
-            source=test_video,
+            source=test_dir,
             conf=0.45,
             save=True,
             project="UAV_VIP Traffic_Light_Detection",
             name="inference_run"
         )
-        print(f"Done! Check the 'UAV_VIP Traffic_Light_Detection/inference_run' folder for your video.")
+        print(f"Done! Check the 'UAV_VIP Traffic_Light_Detection/inference_run' folder for result video.")
     else:
-        print(f"Could not find '{test_video}'. Drop an mp4 file in your VS Code folder to test it.")
+        print(f"Could not find '{test_dir}'. Drop an mp4 file in your VS Code folder to test it.")
 
 if __name__ == '__main__':
     main()
