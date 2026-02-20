@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pt
+runs/
+cinTA_v2-1/
+datasets/
+.env
