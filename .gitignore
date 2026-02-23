@@ -6,3 +6,6 @@ cinTA_v2-1/
 datasets/
 .env
 .vscode/
+build/
+log/
+install/
