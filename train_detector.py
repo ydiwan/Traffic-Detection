@@ -64,7 +64,7 @@ def main():
     
     # init yolov8
     print("Initializing YOLOv8 model...")
-    model = YOLO("yolov8l.pt") 
+    model = YOLO("yolov8n.pt") 
 
     # training
     print("Starting training...")
@@ -74,7 +74,7 @@ def main():
     # pls keep workers at 0, you donut. windows will freeze otherwise
     results = model.train(
         data=data_yaml_path,
-        epochs=80,
+        epochs=50,
         imgsz=640,
         project="TrafficLightRuns",
         name="train_run",

@@ -1,8 +1,8 @@
 task: detect
 mode: train
-model: yolov8l.pt
+model: yolov8n.pt
 data: C:\Users\youss\UAV_VIP Traffic_Light_Detection\cinTA_v2-1\data.yaml
-epochs: 80
+epochs: 50
 time: null
 patience: 100
 batch: 16
